@@ -11,7 +11,7 @@ def connections(links):
         try:
             weight = 1/len(links[i]) 
             for j in links[i]:
-                result[i][j]=weight
+                result[j][i]=weight
         except: #dangling link
             #weight =
             pass
@@ -21,7 +21,8 @@ def connections(links):
 #test cases
 links1 = [[1,2,3],[3],[0],[1,2]]
 print("Testing connections()")
-assert(connections(links1) == [[0, 1/3, 1/3, 1/3],
-                               [0,   0,   0,   1],
-                               [1,   0,   0,   0],
-                               [0, 1/2, 1/2,   0]]
+assert(connections(links1) == [[  0,   0,   1,   0],
+                               [1/3,   0,   0, 1/2],
+                               [1/3,   0,   0, 1/2],
+                               [1/3,   1,   0,   0]])
+print("Success.")

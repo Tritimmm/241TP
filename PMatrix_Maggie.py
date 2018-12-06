@@ -46,5 +46,5 @@ def sortLink(probabilityArray):
     return result
 
 def wrapper(links):
-    rankArray=convergence(diagM(connections(x)))
+    rankArray=convergence(diagM(connections(links)))
     return sortLink(rankArray)

@@ -41,26 +41,13 @@ def convergence(diag):
     N = len(D)
     x0 = np.array([1 for i in range(N)])
     x1 = P @ np.linalg.matrix_power(D, 80) @ Pinv @ x0
-    # error = [0.001 for i in range(N)]
-    # vector = converge(P, D, Pinv, x0, x1)
+    x1 = np.real(x1)    
     return x1
     
 x = [[1, 5], [2, 5], [1, 3, 5], [4], [1, 5], [2, 6], [0, 1]]
     
 print(convergence(diagM(connections(x))))
     
-    
-def converge(P, D, Pinv, x0, x1, depth=1):
-    if depth == 800:
-        print("x1", x1)
-        return x1
-    else:
-        # x1 = P @ np.linalg.matrix_power(D, depth) @ Pinv @ x0
-        x0 = x1
-        x1 = P @ D @ Pinv @ x0
-        converge(P, D, Pinv, x0, x1, depth + 1)
-
-# print(convergence(connections(links1)))
 
 A = [[  0,   0,     1,   0],
                                [1/3,   0,     0, 1/2],

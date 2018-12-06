@@ -13,9 +13,10 @@ def connections(links):
             weight = 1/len(links[i]) 
             for j in links[i]:
                 result[j][i]=weight
-        except: #dangling link
-            #weight =
-            pass
+        except ZeroDivisionError:
+            weight = 1/len(links)
+            for j in range(len(links)):
+                result[i][j] = weight
     return result    
 
 #diagonalize M

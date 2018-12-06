@@ -25,7 +25,30 @@ def diagM(M): #question: will P always be invertible?
     Pinv=np.linalg.inv(P)
     return [P,D,Pinv]
 
-#Test cases
+def convergence(diag):
+    P, D, Pinv = diag[0], diag[1], diag[2]
+    N = len(D)
+    x0 = np.array([1 for i in range(N)])
+    x1 = P @ np.linalg.matrix_power(D, 80) @ Pinv @ x0
+    x1 = np.real(x1)    
+    return x1
+
+def sortLink(probabilityArray):
+    probablityList=probabilityArray.tolist()
+    tmpList=[]
+    result=[]
+    for i in range(len(probablityList)):
+        tmpList.append((probablityList[i],i))
+    tmpList=sorted(tmpList, reverse=True)
+    for i in range(len(tmpList)):
+        result.append(tmpList[i][1])
+    return result
+
+def wrapper(links):
+    rankArray=convergence(diagM(connections(x)))
+    return sortLink(rankArray)
+
+#############################TEST CASE#############################
 links1 = [[1,2,3],[3],[0],[1,2]]
 print("Testing connections()")
 assert(connections(links1) == [[  0,   0,     1,   0],
@@ -35,35 +58,4 @@ assert(connections(links1) == [[  0,   0,     1,   0],
 print("Success.")
 
 
-def convergence(diag):
-    P, D, Pinv = diag[0], diag[1], diag[2]
-    print("D:", np.linalg.matrix_power(D, 80))
-    N = len(D)
-    x0 = np.array([1 for i in range(N)])
-    x1 = P @ np.linalg.matrix_power(D, 80) @ Pinv @ x0
-    x1 = np.real(x1)    
-    return x1
-    
-x = [[1, 5], [2, 5], [1, 3, 5], [4], [1, 5], [2, 6], [0, 1]]
-    
-print(convergence(diagM(connections(x))))
-    
-
-A = [[  0,   0,     1,   0],
-                               [1/3,   0,     0, 1/2],
-                               [1/3,   0,     0, 1/2],
-                               [1/3,   1,     0,   0]]
-
-N = len(A)
-x0 = np.array([1/N for i in range(N)])
-x1 = A @ x0
-def simple(A, x0, x1, depth=1):
-    if depth == 10:
-        print(x1)
-        return x1
-    else:
-        x0 = x1
-        x1 = A @ x0
-        simple(A, x0, x1, depth + 1)
-    
-# print(simple(A, x0, x1))
+x = [[1,3,4],[0,2,4],[3,6],[2,4,6],[5,8],[4,6,8],[0,7,9],[0,6,8],[2,9],[0,2,8]]

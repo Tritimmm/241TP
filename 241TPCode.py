@@ -1,11 +1,36 @@
-#jiayizha
+#241TP--Page Rank
+#jiayizha #ysato
 
 import numpy as np
 
-#turn a list of links into a matrix
-#the j,i entry of which represents the connection between links i,j
-#returns initial matrix M with stochastic cols
-#(I'm terrible at naming things, so change it if you like)
+###run wrapper() on input
+
+def irreachable(start,goal,links,visited=None):
+    if visited==None:
+        visited=set()
+        visited.add(start)
+    if goal in visited: return False
+    else:
+        for tmp in links[start]:
+            visited.add(tmp)
+            for nextTmp in links[tmp]:
+                visited.add(nextTmp)
+                irreachable(nextTmp,goal,links,visited)
+    return True
+
+#return True if links produce a reducible graph
+def isReducible(links):
+    for i in range(len(links)):
+        needToVisit=list(range(len(links)))
+        needToVisit.remove(i)
+        for j in links[i]: #this is like breadth first search?? (actually don't even know the word)
+            needToVisit.remove(j)
+        for k in needToVisit:
+            if irreachable(i,k,links): return True
+    return False
+
+#turn a list-in-list into a matrix that represents the probability of
+#going from one node to another in one step
 def connections(links):
     result = [[0]*len(links) for i in range(len(links))]
     for i in range(len(links)): #use index as write-up
@@ -20,7 +45,7 @@ def connections(links):
     return result    
 
 #diagonalize M
-def diagM(M): #question: will P always be invertible?
+def diagM(M): 
     eigval , P = np.linalg.eig(M)
     D=np.diag(list(eigval))
     Pinv=np.linalg.inv(P)

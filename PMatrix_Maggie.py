@@ -1,11 +1,11 @@
-#jiayizha
+#jiayizha, ysato
 
 import numpy as np
 
 #turn a list of links into a matrix
 #the j,i entry of which represents the connection between links i,j
 #returns initial matrix M with stochastic cols
-#(I'm terrible at naming things, so change it if you like)
+
 def connections(links):
     result = [[0]*len(links) for i in range(len(links))]
     for i in range(len(links)): #use index as write-up
@@ -17,15 +17,24 @@ def connections(links):
             weight = 1/len(links)
             for j in range(len(links)):
                 result[i][j] = weight
+    #for reducible graphs
+    damp = 0.85
+    N = len(result)
+    ones = np.ones(N)
+    for row in range(len(result)):
+        for col in range(len(result[0])):
+            result[row][col] = (damp * result[row][col]) 
+    result += (((1-damp)/N) * ones)
     return result    
 
 #diagonalize M
-def diagM(M): #question: will P always be invertible?
+def diagM(M):
     eigval , P = np.linalg.eig(M)
     D=np.diag(list(eigval))
     Pinv=np.linalg.inv(P)
     return [P,D,Pinv]
 
+#convergence of graph
 def convergence(diag):
     P, D, Pinv = diag[0], diag[1], diag[2]
     N = len(D)
@@ -34,6 +43,7 @@ def convergence(diag):
     x1 = np.real(x1)    
     return x1
 
+#return the order
 def sortLink(probabilityArray):
     probablityList=probabilityArray.tolist()
     tmpList=[]
@@ -48,3 +58,4 @@ def sortLink(probabilityArray):
 def wrapper(links):
     rankArray=convergence(diagM(connections(links)))
     return sortLink(rankArray)
+

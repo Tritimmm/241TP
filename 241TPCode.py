@@ -29,7 +29,7 @@ def connections(links):
     return result
 
 #diagonalize probability matrix
-def diagM(M):
+def diag(M):
     #get eigenvalues and eigenvectors of matrix
     eigval , P = np.linalg.eig(M)
     D = np.diag(list(eigval))
@@ -69,6 +69,6 @@ def sortLink(probabilityArray):
 
 #wrapper: returns ranking of each element in given input
 def rank(links):
-    rankArray = convergence(diagM(connections(links)))
+    rankArray = convergence(diag(connections(links)))
     ranks = sortLink(rankArray)
     return ranks

@@ -59,7 +59,7 @@ def sortLink(probabilityArray):
     #make a tuple for each link (P(i),i)
     for i in range(len(probablityList)):
         tmpList.append((probablityList[i],i))
-    #sort by the probability (ascedning order)
+    #sort by the probability (descending order)
     tmpList = sorted(tmpList, reverse=True)
     #take out the link indices from the ordered tuples
     #to get the rank of each link
